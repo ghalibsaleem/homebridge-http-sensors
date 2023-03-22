@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "HomebridgeHttpSensonrs",
   "pluginType": "platform",
   "singular": true,
   "schema": {

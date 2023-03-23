@@ -39,7 +39,7 @@ export class EnvironmentSensorPlatformAccessory {
 
   constructor(private readonly platform: HomebridgeHttpSensonrs,
     private readonly accessory: PlatformAccessory,
-    public readonly config: any) {
+    config: any) {
     this.globalConfig = config;
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -54,6 +54,7 @@ export class EnvironmentSensorPlatformAccessory {
     this.initCO2Sensor(accessory);
     this.initCO2Sensor(accessory);
     this.initAirQualitySensor(accessory);
+
 
   }
 

@@ -1,6 +1,8 @@
-import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
+import { Service, PlatformAccessory, CharacteristicValue, PlatformConfig } from 'homebridge';
 
 import { HomebridgeHttpSensonrs } from '../platform';
+import { beginPuller } from '../Utilities/executor';
+import { getTextData, getJsonData } from '../network/fetchData';
 
 export class EnvironmentSensorPlatformAccessory {
   private temperatureService: Service | undefined;
@@ -9,6 +11,7 @@ export class EnvironmentSensorPlatformAccessory {
   private co2Service: Service | undefined;
   private coService: Service | undefined;
   private airQualityService: Service | undefined;
+  //private config: PlatformConfig;
 
 
   private currentStates = {
@@ -28,19 +31,22 @@ export class EnvironmentSensorPlatformAccessory {
       COLevel: 30,
     },
     AirQualitySensor:{
+      AirQuality: 1,
       VOCDensity: 40,
     },
   };
 
 
   constructor(private readonly platform: HomebridgeHttpSensonrs,
-    private readonly accessory: PlatformAccessory) {
+    private readonly accessory: PlatformAccessory,
+    public readonly config: PlatformConfig) {
 
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Ghalib Saleem')
       .setCharacteristic(this.platform.Characteristic.Model, 'ESP Sensors')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, 'ES32-001');
+    //this.config = config;
 
     this.initAmbientLightSensor(accessory);
     this.initTemperatureSensor(accessory);
@@ -61,23 +67,19 @@ export class EnvironmentSensorPlatformAccessory {
         minValue: -100,
         maxValue: 100,
       })
-      .onSet(this.setCurrentTemperature.bind(this))
       .onGet(this.getCurrentTemperature.bind(this));
+    beginPuller(this.setCurrentTemperature, 5000);
   }
 
   async getCurrentTemperature(): Promise<CharacteristicValue> {
-    // implement your own code to check if the device is on
-
-    // if you need to return an error to show the device as "Not Responding" in the Home app:
-    // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
-
-
     return this.currentStates.TempSensor.CurrentTemperature;
   }
 
-  async setCurrentTemperature(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
-
+  private async setCurrentTemperature() {
+    const url = this.config.sensors.TemperatureSensor.getUrl;
+    const data = await getTextData(url);
+    this.currentStates.TempSensor.CurrentTemperature = data;
+    this.temperatureService?.setCharacteristic(this.platform.Characteristic.CurrentTemperature, data);
   }
 
   private initAmbientLightSensor(accessory: PlatformAccessory) {
@@ -86,17 +88,19 @@ export class EnvironmentSensorPlatformAccessory {
 
     this.ambientLightService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.ambientLightService.getCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel)
-      .onSet(this.setCurrentAmbientLightLevel.bind(this))
       .onGet(this.getCurrentAmbientLightLevel.bind(this));
+    beginPuller(this.setCurrentAmbientLightLevel, 5000);
   }
 
   async getCurrentAmbientLightLevel(): Promise<CharacteristicValue> {
     return this.currentStates.AmbientLightSensor.CurrentAmbientLightLevel;
   }
 
-  async setCurrentAmbientLightLevel(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
-
+  private async setCurrentAmbientLightLevel() {
+    const url = this.config.sensors.AmbientLightSensor.getUrl;
+    const data = await getTextData(url);
+    this.currentStates.AmbientLightSensor.CurrentAmbientLightLevel = data;
+    this.ambientLightService?.setCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, data);
   }
 
   private initHumiditySensor(accessory: PlatformAccessory) {
@@ -105,17 +109,19 @@ export class EnvironmentSensorPlatformAccessory {
 
     this.humidityService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.humidityService.getCharacteristic(this.platform.Characteristic.CurrentRelativeHumidity)
-      .onSet(this.setCurrentRelativeHumidity.bind(this))
       .onGet(this.getCurrentRelativeHumidity.bind(this));
+    beginPuller(this.setCurrentRelativeHumidity, 5000);
   }
 
   async getCurrentRelativeHumidity(): Promise<CharacteristicValue> {
     return this.currentStates.HumiditySensor.CurrentRelativeHumidity;
   }
 
-  async setCurrentRelativeHumidity(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
-
+  private async setCurrentRelativeHumidity() {
+    const url = this.config.sensors.HumiditySensor.getUrl;
+    const data = await getTextData(url);
+    this.currentStates.HumiditySensor.CurrentRelativeHumidity = data;
+    this.humidityService?.setCharacteristic(this.platform.Characteristic.CurrentRelativeHumidity, data);
   }
 
   private initCO2Sensor(accessory: PlatformAccessory) {
@@ -124,17 +130,19 @@ export class EnvironmentSensorPlatformAccessory {
 
     this.co2Service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.co2Service.getCharacteristic(this.platform.Characteristic.CarbonDioxideLevel)
-      .onSet(this.setCarbonDioxideLevel.bind(this))
       .onGet(this.getCarbonDioxideLevel.bind(this));
+    beginPuller(this.setCarbonDioxideLevel, 5000);
   }
 
   async getCarbonDioxideLevel(): Promise<CharacteristicValue> {
     return this.currentStates.CO2Sensor.CO2Level;
   }
 
-  async setCarbonDioxideLevel(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
-
+  private async setCarbonDioxideLevel() {
+    const url = this.config.sensors.CO2Sensor.getUrl;
+    const data = await getTextData(url);
+    this.currentStates.CO2Sensor.CO2Level = data;
+    this.co2Service?.setCharacteristic(this.platform.Characteristic.CarbonDioxideLevel, data);
   }
 
   private initCOSensor(accessory: PlatformAccessory) {
@@ -143,16 +151,19 @@ export class EnvironmentSensorPlatformAccessory {
 
     this.coService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.coService.getCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel)
-      .onSet(this.setCarbonMonoxideLevel.bind(this))
       .onGet(this.getCarbonMonoxideLevel.bind(this));
+    beginPuller(this.setCarbonMonoxideLevel, 5000);
   }
 
   async getCarbonMonoxideLevel(): Promise<CharacteristicValue> {
     return this.currentStates.COSensor.COLevel;
   }
 
-  async setCarbonMonoxideLevel(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
+  private async setCarbonMonoxideLevel() {
+    const url = this.config.sensors.COSensor.getUrl;
+    const data = await getTextData(url);
+    this.currentStates.COSensor.COLevel = data;
+    this.coService?.setCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel, data);
 
   }
 
@@ -162,16 +173,25 @@ export class EnvironmentSensorPlatformAccessory {
 
     this.airQualityService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.airQualityService.getCharacteristic(this.platform.Characteristic.VOCDensity)
-      .onSet(this.setVOCDensity.bind(this))
       .onGet(this.getVOCDensity.bind(this));
+    this.airQualityService.getCharacteristic(this.platform.Characteristic.AirQuality)
+      .onGet(this.getAirQuality.bind(this));
+    //beginPuller(this.setAirQuality, 5000);
   }
 
   async getVOCDensity(): Promise<CharacteristicValue> {
     return this.currentStates.AirQualitySensor.VOCDensity;
   }
 
-  async setVOCDensity(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
+  async getAirQuality(): Promise<CharacteristicValue> {
+    return this.currentStates.AirQualitySensor.AirQuality;
+  }
 
+  private async setAirQuality() {
+    const url = this.config.sensors.AirQualitySensor.getUrl;
+    const data = await getJsonData(url);
+    this.currentStates.AirQualitySensor.AirQuality = data.AirQuality;
+    this.currentStates.AirQualitySensor.VOCDensity = data.VOCDensity;
+    this.airQualityService?.setCharacteristic(this.platform.Characteristic.VOCDensity, data.VOCDensity);
   }
 }

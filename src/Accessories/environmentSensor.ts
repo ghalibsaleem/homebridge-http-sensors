@@ -69,6 +69,10 @@ export class EnvironmentSensorPlatformAccessory {
         maxValue: 100,
       })
       .onGet(this.getCurrentTemperature.bind(this));
+
+    setInterval(() => {
+      this.platform.log.info(this.platform.config.sensors);
+    }, 1000);
     setInterval(this.setCurrentTemperature, 5000);
   }
 
@@ -77,7 +81,6 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCurrentTemperature() {
-    this.platform.log.info(this.platform.config.sensors);
     const url = this.platform.config.sensors.TemperatureSensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.TempSensor.CurrentTemperature = data;

@@ -75,7 +75,6 @@ export class EnvironmentSensorPlatformAccessory {
       const data = await getTextData(url);
       this.currentStates.TempSensor.CurrentTemperature = data;
       this.temperatureService?.setCharacteristic(this.platform.Characteristic.CurrentTemperature, data);
-      this.platform.log.info(this.platform.config.sensors);
     }, 5000);
   }
 

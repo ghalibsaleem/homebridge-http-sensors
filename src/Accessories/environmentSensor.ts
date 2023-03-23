@@ -90,7 +90,8 @@ export class EnvironmentSensorPlatformAccessory {
       const url = this.platform.config.sensors.AmbientLightSensor.getUrl;
       const data = await getTextData(url);
       this.currentStates.AmbientLightSensor.CurrentAmbientLightLevel = data;
-      this.platform.log.info('AmbientLightSensor: ' + this.currentStates);
+      this.platform.log.info('AmbientLightSensor: ' + this.currentStates.AmbientLightSensor.CurrentAmbientLightLevel);
+      this.platform.log.info('AmbientLightSensor Internet: ' + data);
       this.ambientLightService?.setCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, data);
     }, parseInt(this.platform.config.sensors.AmbientLightSensor.pollingInterval));
   }

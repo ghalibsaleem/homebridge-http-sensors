@@ -52,7 +52,7 @@ export class EnvironmentSensorPlatformAccessory {
     this.initTemperatureSensor(accessory);
     this.initHumiditySensor(accessory);
     this.initCO2Sensor(accessory);
-    this.initCO2Sensor(accessory);
+    this.initCOSensor(accessory);
     this.initAirQualitySensor(accessory);
 
 
@@ -69,7 +69,7 @@ export class EnvironmentSensorPlatformAccessory {
         maxValue: 100,
       })
       .onGet(this.getCurrentTemperature.bind(this));
-    beginPuller(this.setCurrentTemperature, 5000);
+    setInterval(this.setCurrentTemperature, 5000);
   }
 
   async getCurrentTemperature(): Promise<CharacteristicValue> {

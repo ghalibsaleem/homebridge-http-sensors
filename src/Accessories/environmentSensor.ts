@@ -41,7 +41,6 @@ export class EnvironmentSensorPlatformAccessory {
     private readonly accessory: PlatformAccessory,
     config: any) {
     this.globalConfig = this.platform.config.sensors;
-    this.platform.log.info(this.platform.config.sensors);
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Ghalib Saleem')
@@ -78,7 +77,8 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCurrentTemperature() {
-    const url = this.globalConfig.TemperatureSensor.getUrl;
+    this.platform.log.info(this.platform.config.sensors);
+    const url = this.platform.config.sensors.TemperatureSensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.TempSensor.CurrentTemperature = data;
     this.temperatureService?.setCharacteristic(this.platform.Characteristic.CurrentTemperature, data);

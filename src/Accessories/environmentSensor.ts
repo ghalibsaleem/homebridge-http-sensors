@@ -40,7 +40,8 @@ export class EnvironmentSensorPlatformAccessory {
   constructor(private readonly platform: HomebridgeHttpSensonrs,
     private readonly accessory: PlatformAccessory,
     config: any) {
-    this.globalConfig = config;
+    this.globalConfig = this.platform.config.sensors;
+    this.platform.log.info(this.platform.config.sensors);
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Ghalib Saleem')

@@ -91,7 +91,7 @@ export class EnvironmentSensorPlatformAccessory {
     this.ambientLightService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.ambientLightService.getCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel)
       .onGet(this.getCurrentAmbientLightLevel.bind(this));
-    beginPuller(this.setCurrentAmbientLightLevel, 5000);
+    setInterval(this.setCurrentAmbientLightLevel, 5000);
   }
 
   async getCurrentAmbientLightLevel(): Promise<CharacteristicValue> {
@@ -112,7 +112,7 @@ export class EnvironmentSensorPlatformAccessory {
     this.humidityService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.humidityService.getCharacteristic(this.platform.Characteristic.CurrentRelativeHumidity)
       .onGet(this.getCurrentRelativeHumidity.bind(this));
-    beginPuller(this.setCurrentRelativeHumidity, 5000);
+    setInterval(this.setCurrentRelativeHumidity, 5000);
   }
 
   async getCurrentRelativeHumidity(): Promise<CharacteristicValue> {
@@ -133,7 +133,7 @@ export class EnvironmentSensorPlatformAccessory {
     this.co2Service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.co2Service.getCharacteristic(this.platform.Characteristic.CarbonDioxideLevel)
       .onGet(this.getCarbonDioxideLevel.bind(this));
-    beginPuller(this.setCarbonDioxideLevel, 5000);
+    setInterval(this.setCarbonDioxideLevel, 5000);
   }
 
   async getCarbonDioxideLevel(): Promise<CharacteristicValue> {
@@ -154,7 +154,7 @@ export class EnvironmentSensorPlatformAccessory {
     this.coService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
     this.coService.getCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel)
       .onGet(this.getCarbonMonoxideLevel.bind(this));
-    beginPuller(this.setCarbonMonoxideLevel, 5000);
+    setInterval(this.setCarbonMonoxideLevel, 5000);
   }
 
   async getCarbonMonoxideLevel(): Promise<CharacteristicValue> {
@@ -178,7 +178,7 @@ export class EnvironmentSensorPlatformAccessory {
       .onGet(this.getVOCDensity.bind(this));
     this.airQualityService.getCharacteristic(this.platform.Characteristic.AirQuality)
       .onGet(this.getAirQuality.bind(this));
-    //beginPuller(this.setAirQuality, 5000);
+    //setInterval(this.setAirQuality, 5000);
   }
 
   async getVOCDensity(): Promise<CharacteristicValue> {

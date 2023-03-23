@@ -11,7 +11,7 @@ export class EnvironmentSensorPlatformAccessory {
   private co2Service: Service | undefined;
   private coService: Service | undefined;
   private airQualityService: Service | undefined;
-  //private config: PlatformConfig;
+  private globalConfig: PlatformConfig;
 
 
   private currentStates = {
@@ -40,7 +40,7 @@ export class EnvironmentSensorPlatformAccessory {
   constructor(private readonly platform: HomebridgeHttpSensonrs,
     private readonly accessory: PlatformAccessory,
     public readonly config: PlatformConfig) {
-    this.config = config;
+    this.globalConfig = config;
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Ghalib Saleem')
@@ -76,7 +76,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCurrentTemperature() {
-    const url = this.config.sensors.TemperatureSensor.getUrl;
+    const url = this.globalConfig.sensors.TemperatureSensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.TempSensor.CurrentTemperature = data;
     this.temperatureService?.setCharacteristic(this.platform.Characteristic.CurrentTemperature, data);
@@ -97,7 +97,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCurrentAmbientLightLevel() {
-    const url = this.config.sensors.AmbientLightSensor.getUrl;
+    const url = this.globalConfig.sensors.AmbientLightSensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.AmbientLightSensor.CurrentAmbientLightLevel = data;
     this.ambientLightService?.setCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel, data);
@@ -118,7 +118,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCurrentRelativeHumidity() {
-    const url = this.config.sensors.HumiditySensor.getUrl;
+    const url = this.globalConfig.sensors.HumiditySensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.HumiditySensor.CurrentRelativeHumidity = data;
     this.humidityService?.setCharacteristic(this.platform.Characteristic.CurrentRelativeHumidity, data);
@@ -139,7 +139,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCarbonDioxideLevel() {
-    const url = this.config.sensors.CO2Sensor.getUrl;
+    const url = this.globalConfig.sensors.CO2Sensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.CO2Sensor.CO2Level = data;
     this.co2Service?.setCharacteristic(this.platform.Characteristic.CarbonDioxideLevel, data);
@@ -160,7 +160,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setCarbonMonoxideLevel() {
-    const url = this.config.sensors.COSensor.getUrl;
+    const url = this.globalConfig.sensors.COSensor.getUrl;
     const data = await getTextData(url);
     this.currentStates.COSensor.COLevel = data;
     this.coService?.setCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel, data);
@@ -188,7 +188,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   private async setAirQuality() {
-    const url = this.config.sensors.AirQualitySensor.getUrl;
+    const url = this.globalConfig.sensors.AirQualitySensor.getUrl;
     const data = await getJsonData(url);
     this.currentStates.AirQualitySensor.AirQuality = data.AirQuality;
     this.currentStates.AirQualitySensor.VOCDensity = data.VOCDensity;

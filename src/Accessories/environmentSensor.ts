@@ -160,7 +160,7 @@ export class EnvironmentSensorPlatformAccessory {
     setInterval(async () => {
       const url = this.platform.config.sensors.COSensor.getUrl;
       let data = await getTextData(url);
-      data = data / 100;
+      data = 3;
       if (data < 0.01){
         data = 0.01;
       }
@@ -190,10 +190,10 @@ export class EnvironmentSensorPlatformAccessory {
     setInterval(async () => {
       const url = this.platform.config.sensors.AirQualitySensor.getUrl;
       const data = await getJsonData(url);
-      this.currentStates.AirQualitySensor.AirQuality = data.AirQuality;
-      this.currentStates.AirQualitySensor.VOCDensity = data.VOCDensity;
-      this.currentStates.AirQualitySensor.PM2_5 = data.PM2_5;
-      this.currentStates.AirQualitySensor.PM10 = data.PM10;
+      this.currentStates.AirQualitySensor.AirQuality = data.air_quality;
+      this.currentStates.AirQualitySensor.VOCDensity = data.voc;
+      this.currentStates.AirQualitySensor.PM2_5 = data.pm2_5;
+      this.currentStates.AirQualitySensor.PM10 = data.pm10;
       this.coService?.setCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel, data.VOCDensity);
     }, parseInt(this.platform.config.sensors.AirQualitySensor.pollingInterval));
   }

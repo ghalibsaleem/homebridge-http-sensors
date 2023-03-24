@@ -1,0 +1,42 @@
+{
+    "name": "Bedroom",
+    "platform": "HomebridgeHttpSensonrs",
+    "sensors": {
+        "TemperatureSensor": {
+            "getUrl": "http://192.168.1.179/temperature",
+            "name": "Temperature",
+            "pollingInterval": 10000
+        },
+        "HumiditySensor": {
+            "getUrl": "http://192.168.1.179/humidity",
+            "name": "Humidity",
+            "pollingInterval": 10000
+        },
+        "CO2Sensor": {
+            "getUrl": "http://192.168.1.179/eco2",
+            "name": "CO2",
+            "pollingInterval": 50000,
+            "threshold": 1000
+        },
+        "COSensor": {
+            "getUrl": "http://192.168.1.179/eco2",
+            "name": "CO",
+            "pollingInterval": 100000,
+            "threshold": 1000
+        },
+        "AmbientLightSensor": {
+            "getUrl": "http://192.168.1.179/ambientlight",
+            "name": "AMbient Light",
+            "pollingInterval": 70000
+        },
+        "AirQualitySensor": {
+            "getUrl": "http://192.168.1.179/airquality",
+            "name": "Air Quality",
+            "pollingInterval": 100000
+        }
+    },
+    "_bridge": {
+        "username": "0E:1C:F9:38:D3:95",
+        "port": 36727
+    }
+}

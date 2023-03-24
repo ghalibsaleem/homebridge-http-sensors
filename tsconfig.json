@@ -15,11 +15,14 @@
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true
   },
   "include": [
     "src/",
-    "src/Accessories/"
+    "src/Accessories/",
+    "src/config/schema.json",
+    "src/config/example.json"
   ],
   "exclude": [
     "**/*.spec.ts"

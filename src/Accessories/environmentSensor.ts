@@ -160,12 +160,13 @@ export class EnvironmentSensorPlatformAccessory {
     setInterval(async () => {
       const url = this.platform.config.sensors.COSensor.getUrl;
       let data = await getTextData(url);
+      data = data / 100;
       if (data < 0.01){
         data = 0.01;
       }
       this.currentStates.COSensor.COLevel = data;
       this.coService?.setCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel, data);
-    }, parseInt(this.platform.config.sensors.CO2Sensor.pollingInterval));
+    }, parseInt(this.platform.config.sensors.COSensor.pollingInterval));
   }
 
   async getCarbonMonoxideLevel(): Promise<CharacteristicValue> {

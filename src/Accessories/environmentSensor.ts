@@ -1,7 +1,6 @@
-import { Service, PlatformAccessory, CharacteristicValue, PlatformConfig } from 'homebridge';
+import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
 import { HomebridgeHttpSensonrs } from '../platform';
-import { beginPuller } from '../Utilities/executor';
 import { getTextData, getJsonData } from '../network/fetchData';
 
 export class EnvironmentSensorPlatformAccessory {
@@ -45,23 +44,22 @@ export class EnvironmentSensorPlatformAccessory {
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Ghalib Saleem')
       .setCharacteristic(this.platform.Characteristic.Model, 'ESP Sensors')
       .setCharacteristic(this.platform.Characteristic.SerialNumber, 'ES32-001');
-    //this.config = config;
 
-    this.initAmbientLightSensor(accessory);
-    this.initTemperatureSensor(accessory);
-    this.initHumiditySensor(accessory);
-    this.initCO2Sensor(accessory);
-    this.initCOSensor(accessory);
-    this.initAirQualitySensor(accessory);
+    this.initAmbientLightSensor();
+    this.initTemperatureSensor();
+    this.initHumiditySensor();
+    this.initCO2Sensor();
+    this.initCOSensor();
+    this.initAirQualitySensor();
 
 
   }
 
-  private initTemperatureSensor(accessory: PlatformAccessory) {
+  private initTemperatureSensor() {
     this.temperatureService = this.accessory.getService(this.platform.Service.TemperatureSensor)
       || this.accessory.addService(this.platform.Service.TemperatureSensor);
 
-    this.temperatureService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.temperatureService.setCharacteristic(this.platform.Characteristic.Name, this.platform.config.sensors.TemperatureSensor.name);
     this.temperatureService.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
       .setProps({
         minValue: -100,
@@ -84,11 +82,11 @@ export class EnvironmentSensorPlatformAccessory {
     return this.currentStates.TempSensor.CurrentTemperature;
   }
 
-  private initAmbientLightSensor(accessory: PlatformAccessory) {
+  private initAmbientLightSensor() {
     this.ambientLightService = this.accessory.getService(this.platform.Service.LightSensor)
       || this.accessory.addService(this.platform.Service.LightSensor);
 
-    this.ambientLightService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.ambientLightService.setCharacteristic(this.platform.Characteristic.Name, this.platform.config.sensors.AmbientLightSensor.name);
     this.ambientLightService.getCharacteristic(this.platform.Characteristic.CurrentAmbientLightLevel)
       .onGet(this.getCurrentAmbientLightLevel.bind(this));
     setInterval(async () => {
@@ -106,11 +104,11 @@ export class EnvironmentSensorPlatformAccessory {
     return this.currentStates.AmbientLightSensor.CurrentAmbientLightLevel;
   }
 
-  private initHumiditySensor(accessory: PlatformAccessory) {
+  private initHumiditySensor() {
     this.humidityService = this.accessory.getService(this.platform.Service.HumiditySensor)
       || this.accessory.addService(this.platform.Service.HumiditySensor);
 
-    this.humidityService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.humidityService.setCharacteristic(this.platform.Characteristic.Name, this.platform.config.sensors.HumiditySensor.name);
     this.humidityService.getCharacteristic(this.platform.Characteristic.CurrentRelativeHumidity)
       .onGet(this.getCurrentRelativeHumidity.bind(this));
     setInterval(async () => {
@@ -128,13 +126,15 @@ export class EnvironmentSensorPlatformAccessory {
     return this.currentStates.HumiditySensor.CurrentRelativeHumidity;
   }
 
-  private initCO2Sensor(accessory: PlatformAccessory) {
+  private initCO2Sensor() {
     this.co2Service = this.accessory.getService(this.platform.Service.CarbonDioxideSensor)
       || this.accessory.addService(this.platform.Service.CarbonDioxideSensor);
 
-    this.co2Service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.co2Service.setCharacteristic(this.platform.Characteristic.Name, this.platform.config.sensors.CO2Sensor.name);
     this.co2Service.getCharacteristic(this.platform.Characteristic.CarbonDioxideLevel)
       .onGet(this.getCarbonDioxideLevel.bind(this));
+    this.co2Service.getCharacteristic(this.platform.Characteristic.CarbonDioxideDetected)
+      .onGet(this.getCarbonDioxideDetected.bind(this));
     setInterval(async () => {
       const url = this.platform.config.sensors.CO2Sensor.getUrl;
       let data = await getTextData(url);
@@ -150,13 +150,27 @@ export class EnvironmentSensorPlatformAccessory {
     return this.currentStates.CO2Sensor.CO2Level;
   }
 
-  private initCOSensor(accessory: PlatformAccessory) {
+  async getCarbonDioxideDetected(): Promise<CharacteristicValue> {
+    let threshold = 1000;
+    if (this.platform.config.sensors.CO2Sensor.threshold){
+      threshold = this.platform.config.sensors.CO2Sensor.threshold;
+    }
+
+    if (this.currentStates.CO2Sensor.CO2Level > threshold) {
+      return true;
+    }
+    return false;
+  }
+
+  private initCOSensor() {
     this.coService = this.accessory.getService(this.platform.Service.CarbonMonoxideSensor)
       || this.accessory.addService(this.platform.Service.CarbonMonoxideSensor);
 
-    this.coService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.coService.setCharacteristic(this.platform.Characteristic.Name, this.platform.config.sensors.COSensor.name);
     this.coService.getCharacteristic(this.platform.Characteristic.CarbonMonoxideLevel)
       .onGet(this.getCarbonMonoxideLevel.bind(this));
+    this.coService.getCharacteristic(this.platform.Characteristic.CarbonMonoxideDetected)
+      .onGet(this.getCarbonMonoxideDetected.bind(this));
     setInterval(async () => {
       const url = this.platform.config.sensors.COSensor.getUrl;
       let data = await getTextData(url);
@@ -173,11 +187,23 @@ export class EnvironmentSensorPlatformAccessory {
     return this.currentStates.COSensor.COLevel;
   }
 
-  private initAirQualitySensor(accessory: PlatformAccessory) {
+  async getCarbonMonoxideDetected(): Promise<CharacteristicValue> {
+    let threshold = 1000;
+    if (this.platform.config.sensors.COSensor.threshold){
+      threshold = this.platform.config.sensors.COSensor.threshold;
+    }
+
+    if (this.currentStates.COSensor.COLevel > threshold) {
+      return true;
+    }
+    return false;
+  }
+
+  private initAirQualitySensor() {
     this.airQualityService = this.accessory.getService(this.platform.Service.AirQualitySensor)
       || this.accessory.addService(this.platform.Service.AirQualitySensor);
 
-    this.airQualityService.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
+    this.airQualityService.setCharacteristic(this.platform.Characteristic.Name, this.platform.config.sensors.AirQualitySensor.name);
     this.airQualityService.getCharacteristic(this.platform.Characteristic.VOCDensity)
       .onGet(this.getVOCDensity.bind(this));
     this.airQualityService.getCharacteristic(this.platform.Characteristic.AirQuality)

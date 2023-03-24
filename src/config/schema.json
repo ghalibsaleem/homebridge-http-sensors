@@ -1,0 +1,152 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "platform": {
+        "type": "string"
+      },
+      "sensors": {
+        "type": "object",
+        "properties": {
+          "TemperatureSensor": {
+            "type": "object",
+            "properties": {
+              "getUrl": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pollingInterval": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "getUrl",
+              "name",
+              "pollingInterval"
+            ]
+          },
+          "HumiditySensor": {
+            "type": "object",
+            "properties": {
+              "getUrl": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pollingInterval": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "getUrl",
+              "name",
+              "pollingInterval"
+            ]
+          },
+          "CO2Sensor": {
+            "type": "object",
+            "properties": {
+              "getUrl": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pollingInterval": {
+                "type": "integer"
+              },
+              "threshold": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "getUrl",
+              "name",
+              "pollingInterval",
+              "threshold"
+            ]
+          },
+          "COSensor": {
+            "type": "object",
+            "properties": {
+              "getUrl": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pollingInterval": {
+                "type": "integer"
+              },
+              "threshold": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "getUrl",
+              "name",
+              "pollingInterval",
+              "threshold"
+            ]
+          },
+          "AmbientLightSensor": {
+            "type": "object",
+            "properties": {
+              "getUrl": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pollingInterval": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "getUrl",
+              "name",
+              "pollingInterval"
+            ]
+          },
+          "AirQualitySensor": {
+            "type": "object",
+            "properties": {
+              "getUrl": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pollingInterval": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "getUrl",
+              "name",
+              "pollingInterval"
+            ]
+          }
+        },
+        "required": [
+          "TemperatureSensor",
+          "HumiditySensor",
+          "CO2Sensor",
+          "COSensor",
+          "AmbientLightSensor",
+          "AirQualitySensor"
+        ]
+      }
+    },
+    "required": [
+      "name",
+      "platform",
+      "sensors"
+    ]
+  }

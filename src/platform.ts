@@ -2,6 +2,7 @@ import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, 
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { EnvironmentSensorPlatformAccessory } from './Accessories/environmentSensor';
+import { validateConfig } from './Utilities/jsonValidator';
 
 
 /**
@@ -54,20 +55,23 @@ export class HomebridgeHttpSensonrs implements DynamicPlatformPlugin {
     ];
 
     // loop over the discovered devices and register each one if it has not already been registered
-    for (const device of exampleDevices) {
-      const uuid = this.api.hap.uuid.generate(device.exampleUniqueId);
-      const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
+    if (validateConfig(this.config)) {
+      for (const device of exampleDevices) {
+        const uuid = this.api.hap.uuid.generate(device.exampleUniqueId);
+        const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
 
-      if (existingAccessory) {
-        this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
-        new EnvironmentSensorPlatformAccessory(this, existingAccessory);
-      } else {
-        this.log.info('Adding new accessory:', device.exampleDisplayName);
-        const accessory = new this.api.platformAccessory(device.exampleDisplayName, uuid);
-        accessory.context.device = device;
-        new EnvironmentSensorPlatformAccessory(this, accessory);
-        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        if (existingAccessory) {
+          this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
+          new EnvironmentSensorPlatformAccessory(this, existingAccessory);
+        } else {
+          this.log.info('Adding new accessory:', device.exampleDisplayName);
+          const accessory = new this.api.platformAccessory(device.exampleDisplayName, uuid);
+          accessory.context.device = device;
+          new EnvironmentSensorPlatformAccessory(this, accessory);
+          this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        }
       }
     }
+
   }
 }

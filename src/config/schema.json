@@ -1,152 +1,322 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-      "name": {
-        "type": "string"
-      },
-      "platform": {
-        "type": "string"
-      },
-      "sensors": {
-        "type": "object",
-        "properties": {
-          "TemperatureSensor": {
-            "type": "object",
-            "properties": {
-              "getUrl": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "pollingInterval": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "getUrl",
-              "name",
-              "pollingInterval"
-            ]
-          },
-          "HumiditySensor": {
-            "type": "object",
-            "properties": {
-              "getUrl": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "pollingInterval": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "getUrl",
-              "name",
-              "pollingInterval"
-            ]
-          },
-          "CO2Sensor": {
-            "type": "object",
-            "properties": {
-              "getUrl": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "pollingInterval": {
-                "type": "integer"
-              },
-              "threshold": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "getUrl",
-              "name",
-              "pollingInterval",
-              "threshold"
-            ]
-          },
-          "COSensor": {
-            "type": "object",
-            "properties": {
-              "getUrl": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "pollingInterval": {
-                "type": "integer"
-              },
-              "threshold": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "getUrl",
-              "name",
-              "pollingInterval",
-              "threshold"
-            ]
-          },
-          "AmbientLightSensor": {
-            "type": "object",
-            "properties": {
-              "getUrl": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "pollingInterval": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "getUrl",
-              "name",
-              "pollingInterval"
-            ]
-          },
-          "AirQualitySensor": {
-            "type": "object",
-            "properties": {
-              "getUrl": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "pollingInterval": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "getUrl",
-              "name",
-              "pollingInterval"
-            ]
-          }
-        },
-        "required": [
-          "TemperatureSensor",
-          "HumiditySensor",
-          "CO2Sensor",
-          "COSensor",
-          "AmbientLightSensor",
-          "AirQualitySensor"
-        ]
-      }
-    },
-    "required": [
-      "name",
-      "platform",
-      "sensors"
-    ]
-  }
+	"definitions": {},
+	"$schema": "http://json-schema.org/draft-07/schema#", 
+	"$id": "https://example.com/object1679693796.json", 
+	"title": "Root", 
+	"type": "object",
+	"required": [
+		"name",
+		"platform",
+		"sensors"
+	],
+	"properties": {
+		"name": {
+			"$id": "#root/name", 
+			"title": "Name", 
+			"type": "string",
+			"default": "",
+			"examples": [
+				"Bedroom"
+			],
+			"pattern": "^.*$"
+		},
+		"platform": {
+			"$id": "#root/platform", 
+			"title": "Platform", 
+			"type": "string",
+			"default": "",
+			"examples": [
+				"HomebridgeHttpSensonrs"
+			],
+			"pattern": "^.*$"
+		},
+		"sensors": {
+			"$id": "#root/sensors", 
+			"title": "Sensors", 
+			"type": "object",
+			"required": [
+				"TemperatureSensor",
+				"HumiditySensor",
+				"CO2Sensor",
+				"COSensor",
+				"AmbientLightSensor",
+				"AirQualitySensor"
+			],
+			"properties": {
+				"TemperatureSensor": {
+					"$id": "#root/sensors/TemperatureSensor", 
+					"title": "Temperaturesensor", 
+					"type": "object",
+					"required": [
+						"getUrl",
+						"name",
+						"pollingInterval"
+					],
+					"properties": {
+						"getUrl": {
+							"$id": "#root/sensors/TemperatureSensor/getUrl", 
+							"title": "Geturl", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"http://192.168.1.179/temperature"
+							],
+							"pattern": "^.*$"
+						},
+						"name": {
+							"$id": "#root/sensors/TemperatureSensor/name", 
+							"title": "Name", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"Temperature"
+							],
+							"pattern": "^.*$"
+						},
+						"pollingInterval": {
+							"$id": "#root/sensors/TemperatureSensor/pollingInterval", 
+							"title": "Pollinginterval", 
+							"type": "integer",
+							"examples": [
+								10000
+							],
+							"default": 0
+						}
+					}
+				}
+,
+				"HumiditySensor": {
+					"$id": "#root/sensors/HumiditySensor", 
+					"title": "Humiditysensor", 
+					"type": "object",
+					"required": [
+						"getUrl",
+						"name",
+						"pollingInterval"
+					],
+					"properties": {
+						"getUrl": {
+							"$id": "#root/sensors/HumiditySensor/getUrl", 
+							"title": "Geturl", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"http://192.168.1.179/humidity"
+							],
+							"pattern": "^.*$"
+						},
+						"name": {
+							"$id": "#root/sensors/HumiditySensor/name", 
+							"title": "Name", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"Humidity"
+							],
+							"pattern": "^.*$"
+						},
+						"pollingInterval": {
+							"$id": "#root/sensors/HumiditySensor/pollingInterval", 
+							"title": "Pollinginterval", 
+							"type": "integer",
+							"examples": [
+								10000
+							],
+							"default": 0
+						}
+					}
+				}
+,
+				"CO2Sensor": {
+					"$id": "#root/sensors/CO2Sensor", 
+					"title": "Co2sensor", 
+					"type": "object",
+					"required": [
+						"getUrl",
+						"name",
+						"pollingInterval",
+						"threshold"
+					],
+					"properties": {
+						"getUrl": {
+							"$id": "#root/sensors/CO2Sensor/getUrl", 
+							"title": "Geturl", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"http://192.168.1.179/eco2"
+							],
+							"pattern": "^.*$"
+						},
+						"name": {
+							"$id": "#root/sensors/CO2Sensor/name", 
+							"title": "Name", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"CO2"
+							],
+							"pattern": "^.*$"
+						},
+						"pollingInterval": {
+							"$id": "#root/sensors/CO2Sensor/pollingInterval", 
+							"title": "Pollinginterval", 
+							"type": "integer",
+							"examples": [
+								50000
+							],
+							"default": 0
+						},
+						"threshold": {
+							"$id": "#root/sensors/CO2Sensor/threshold", 
+							"title": "Threshold", 
+							"type": "integer",
+							"examples": [
+								1000
+							],
+							"default": 0
+						}
+					}
+				}
+,
+				"COSensor": {
+					"$id": "#root/sensors/COSensor", 
+					"title": "Cosensor", 
+					"type": "object",
+					"required": [
+						"getUrl",
+						"name",
+						"pollingInterval",
+						"threshold"
+					],
+					"properties": {
+						"getUrl": {
+							"$id": "#root/sensors/COSensor/getUrl", 
+							"title": "Geturl", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"http://192.168.1.179/eco2"
+							],
+							"pattern": "^.*$"
+						},
+						"name": {
+							"$id": "#root/sensors/COSensor/name", 
+							"title": "Name", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"CO"
+							],
+							"pattern": "^.*$"
+						},
+						"pollingInterval": {
+							"$id": "#root/sensors/COSensor/pollingInterval", 
+							"title": "Pollinginterval", 
+							"type": "integer",
+							"examples": [
+								100000
+							],
+							"default": 0
+						},
+						"threshold": {
+							"$id": "#root/sensors/COSensor/threshold", 
+							"title": "Threshold", 
+							"type": "integer",
+							"examples": [
+								1000
+							],
+							"default": 0
+						}
+					}
+				}
+,
+				"AmbientLightSensor": {
+					"$id": "#root/sensors/AmbientLightSensor", 
+					"title": "Ambientlightsensor", 
+					"type": "object",
+					"required": [
+						"getUrl",
+						"name",
+						"pollingInterval"
+					],
+					"properties": {
+						"getUrl": {
+							"$id": "#root/sensors/AmbientLightSensor/getUrl", 
+							"title": "Geturl", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"http://192.168.1.179/ambientlight"
+							],
+							"pattern": "^.*$"
+						},
+						"name": {
+							"$id": "#root/sensors/AmbientLightSensor/name", 
+							"title": "Name", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"AMbient Light"
+							],
+							"pattern": "^.*$"
+						},
+						"pollingInterval": {
+							"$id": "#root/sensors/AmbientLightSensor/pollingInterval", 
+							"title": "Pollinginterval", 
+							"type": "integer",
+							"examples": [
+								70000
+							],
+							"default": 0
+						}
+					}
+				}
+,
+				"AirQualitySensor": {
+					"$id": "#root/sensors/AirQualitySensor", 
+					"title": "Airqualitysensor", 
+					"type": "object",
+					"required": [
+						"getUrl",
+						"name",
+						"pollingInterval"
+					],
+					"properties": {
+						"getUrl": {
+							"$id": "#root/sensors/AirQualitySensor/getUrl", 
+							"title": "Geturl", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"http://192.168.1.179/airquality"
+							],
+							"pattern": "^.*$"
+						},
+						"name": {
+							"$id": "#root/sensors/AirQualitySensor/name", 
+							"title": "Name", 
+							"type": "string",
+							"default": "",
+							"examples": [
+								"Air Quality"
+							],
+							"pattern": "^.*$"
+						},
+						"pollingInterval": {
+							"$id": "#root/sensors/AirQualitySensor/pollingInterval", 
+							"title": "Pollinginterval", 
+							"type": "integer",
+							"examples": [
+								100000
+							],
+							"default": 0
+						}
+					}
+				}
+
+			}
+		}
+
+	}
+}

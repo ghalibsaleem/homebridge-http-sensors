@@ -174,7 +174,6 @@ export class EnvironmentSensorPlatformAccessory {
     setInterval(async () => {
       const url = this.platform.config.sensors.COSensor.getUrl;
       let data = await getTextData(url);
-      data = 3;
       if (data < 0.01){
         data = 0.01;
       }
@@ -188,7 +187,7 @@ export class EnvironmentSensorPlatformAccessory {
   }
 
   async getCarbonMonoxideDetected(): Promise<CharacteristicValue> {
-    let threshold = 1000;
+    let threshold = 100;
     if (this.platform.config.sensors.COSensor.threshold){
       threshold = this.platform.config.sensors.COSensor.threshold;
     }
